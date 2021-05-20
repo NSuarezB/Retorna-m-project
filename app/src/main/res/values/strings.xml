@@ -1,0 +1,54 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Retornam2.0</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Retorna\'m</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="text_home">Esta es la pagina principal</string>
+    <string name="esta_es_la_pagina_principal">Esta es la pagina principal</string>
+    <string name="deixats2">Deixats</string>
+    <string name="a_retornar">A retornar</string>
+    <string name="username">Username</string>
+    <string name="deixats">Deixats</string>
+    <string name="a_retornar2">A retornar</string>
+    <string name="new_item">new_item2</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pruebas">Pruebas</string>
+    <string name="button">Button</string>
+    <string name="title_activity_main2">MainActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="segona_pantalla">segona pantalla</string>
+    <string name="hola_2">Hola 2</string>
+    <string name="hello">Hello</string>
+    <string name="todo4">TODO</string>
+    <string name="title_activity_main3">MainActivity</string>
+    <string name="prestec">Prestec</string>
+    <string name="todo5">TODO</string>
+    <string name="oops_no_tens_cap_objecte">Oops, no tens cap objecte!</string>
+    <string name="todo6">TODO</string>
+    <string name="oops_no_tens_cap_objecte_per_deixar">oops no tens cap objecte,per deixar!</string>
+    <string name="todo">todo20</string>
+    <string name="textview">TextView</string>
+    <string name="button2">Button</string>
+    <string name="name2">Name</string>
+    <string name="name">Name</string>
+    <string name="guardar">Guardar</string>
+    <string name="title_activity_main5">MainActivity5</string>
+    <string name="nom_objecte">Nom objecte</string>
+    <string name="descripcio">Descripcio</string>
+
+</resources>
