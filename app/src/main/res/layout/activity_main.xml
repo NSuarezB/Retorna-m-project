@@ -31,30 +31,32 @@
             android:id="@+id/menuFlotant"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:menu_fab_label="Menu :D"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="-2dp"
+            android:layout_marginBottom="1dp"
             app:menu_colorNormal="@color/purple_200"
-            app:menu_colorRipple="@color/teal_200">
+            app:menu_colorRipple="@color/teal_200"
+            app:menu_fab_label="Menu :D">
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/nouPrestec"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:fab_label="Nou prestec"
                 android:src="@mipmap/deixar_icon_foreground"
                 app:fab_colorNormal="@color/purple_200"
                 app:fab_colorRipple="@color/teal_200"
-                />
+                app:fab_label="Nou prestec" />
+
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/nouObjecte"
 
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:fab_label="Nou objecte"
                 android:src="@mipmap/objecte_cub2_foreground"
                 app:fab_colorNormal="@color/purple_200"
                 app:fab_colorRipple="@color/teal_200"
+                app:fab_label="Nou objecte"
 
                 />
 

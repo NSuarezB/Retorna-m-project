@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "831246880658",
+    "project_id": "natihina-retornam",
+    "storage_bucket": "natihina-retornam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831246880658:android:a4a05d885e9d1e723d7b4b",
+        "android_client_info": {
+          "package_name": "com.example.retornam20"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831246880658-mfkpv8v8t0qabtsqicbmeevbcegsrjmj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9EEwTccJ-Czbrw-biUUM1UCBycqMME2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831246880658-mfkpv8v8t0qabtsqicbmeevbcegsrjmj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

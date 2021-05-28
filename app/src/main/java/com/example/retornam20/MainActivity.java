@@ -2,23 +2,24 @@ package com.example.retornam20;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
+import android.view.View;
 
-import com.example.retornam20.data.DatabaseHelper;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.retornam20.data.DatabaseHelper;
 import com.example.retornam20.databinding.ActivityMainBinding;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,23 +27,25 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+
     FloatingActionMenu actionMenu;
     FloatingActionButton nouObjecte;
     FloatingActionButton nouPrestec;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+       binding = ActivityMainBinding.inflate(getLayoutInflater());
+       setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+        mAuth = FirebaseAuth.getInstance();
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -53,22 +56,14 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-    /***
-     *
-     *  Menu flotant
-     *
-     * */
-
-            actionMenu=(FloatingActionMenu)findViewById(R.id.menuFlotant);
-            actionMenu.setClosedOnTouchOutside(true);
-
-          //
+        actionMenu=(FloatingActionMenu)findViewById(R.id.menuFlotant);
+        actionMenu.setClosedOnTouchOutside(true);
 
         nouObjecte=(FloatingActionButton)findViewById(R.id.nouObjecte);
         nouObjecte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(getApplicationContext(),MainActivity5.class);
+                Intent i=new Intent(getApplicationContext(),NouObjecteActivity.class);
                 startActivity(i);
             }
 
@@ -80,22 +75,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(getApplicationContext(),MainActivity4.class);
+                Intent i=new Intent(getApplicationContext(),NouPrestecActivity.class);
                 startActivity(i);
             }
         });
 
-
-        /**
-         *
-         *  Database things
-         *
-         */
-
-
-        myDb = new DatabaseHelper(this);
-
-
+        db = FirebaseFirestore.getInstance();
     }
 
 
@@ -114,7 +99,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-
-
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user == null){
+            Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+            startActivity(i);
+        }
+    }
 }

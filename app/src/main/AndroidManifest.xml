@@ -9,18 +9,13 @@
         android:roundIcon="@mipmap/objecte_cub"
         android:supportsRtl="true"
         android:theme="@style/Theme.Retornam20">
+        <activity android:name=".NouPrestecActivity"></activity>
+        <activity android:name=".NouObjecteActivity" />
+        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".LoginActivity" />
         <activity
             android:name=".MainActivity5"
             android:label="@string/title_activity_main5"
-            android:theme="@style/Theme.Retornam20.NoActionBar"></activity>
-        <activity
-            android:name=".MainActivity2"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/Theme.Retornam20.NoActionBar" />
-        <activity android:name=".MainActivity4" />
-        <activity
-            android:name=".MainActivity3"
-            android:label="@string/title_activity_main3"
             android:theme="@style/Theme.Retornam20.NoActionBar" />
         <activity
             android:name=".MainActivity"
