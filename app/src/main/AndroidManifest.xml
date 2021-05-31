@@ -9,18 +9,17 @@
         android:roundIcon="@mipmap/objecte_cub"
         android:supportsRtl="true"
         android:theme="@style/Theme.Retornam20">
-        <activity android:name=".NouPrestecActivity"></activity>
-        <activity android:name=".NouObjecteActivity" />
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity
-            android:name=".MainActivity5"
-            android:label="@string/title_activity_main5"
-            android:theme="@style/Theme.Retornam20.NoActionBar" />
+        <activity android:name=".LlistatObjectesActivity" android:screenOrientation="portrait" />
+        <activity android:name=".SelectObjecteActivity" android:screenOrientation="portrait" />
+        <activity android:name=".NouPrestecActivity" android:screenOrientation="portrait" />
+        <activity android:name=".NouObjecteActivity" android:screenOrientation="portrait" />
+        <activity android:name=".RegistrationActivity" android:screenOrientation="portrait" />
+        <activity android:name=".LoginActivity" android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Retornam20.NoActionBar">
+            android:theme="@style/Theme.Retornam20.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

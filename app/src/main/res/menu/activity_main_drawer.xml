@@ -9,12 +9,12 @@
             android:icon="@mipmap/home_icon2"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/deixats" />
+            android:id="@+id/nav_objectes"
+            android:icon="@mipmap/objecte_cub"
+            android:title="Objectes" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/a_retornar" />
+            android:title="Configuració" />
     </group>
 </menu>

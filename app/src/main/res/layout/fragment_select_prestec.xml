@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="270dp"
+                android:layout_height="140dp"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/objecte_cub" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="Nom objecte deixat"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0">
+
+                    <TextView
+                        android:id="@+id/textViewLblPersonaPrestada"
+                        android:layout_width="130dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:gravity="center|start"
+                        android:text="Persona prestada"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textViewPersonaPRestada"
+                        android:layout_width="130dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:gravity="center|start"
+                        android:text="@string/hello_blank_fragment" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewLblDataPrestec"
+                        android:layout_width="130dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:gravity="center|start"
+                        android:padding="5dp"
+                        android:text="Data prestec:"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textViewDataPrestec"
+                        android:layout_width="130dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:gravity="center|start"
+                        android:text="TextView" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewLblDataDevolucio"
+                        android:layout_width="130dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:gravity="center|start"
+                        android:padding="5dp"
+                        android:text="Data devolució:"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textViewDataDevolucio"
+                        android:layout_width="130dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:gravity="center|start"
+                        android:text="TextView"
+                        tools:ignore="DuplicateIds" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/button6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="Retorna't" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

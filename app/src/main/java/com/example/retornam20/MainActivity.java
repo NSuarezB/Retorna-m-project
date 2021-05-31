@@ -2,111 +2,201 @@ package com.example.retornam20;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import androidx.fragment.app.Fragment;
 
-import com.example.retornam20.data.DatabaseHelper;
-import com.example.retornam20.databinding.ActivityMainBinding;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-public class MainActivity extends AppCompatActivity {
+import org.jetbrains.annotations.NotNull;
 
-    DatabaseHelper myDb;
+/**
+ * Classe d'entrada principal del programa. En cas de no tenir la sessió iniciada saltarà a la
+ * LoginActivity per a iniciar-la.
+ */
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
-    private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainBinding binding;
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    Toolbar toolbar;
 
-    FloatingActionMenu actionMenu;
+    FirebaseAuth mAuth;
+    FirebaseUser user;
+
+    FloatingActionMenu floatingActionMenu;
     FloatingActionButton nouObjecte;
     FloatingActionButton nouPrestec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-       binding = ActivityMainBinding.inflate(getLayoutInflater());
-       setContentView(binding.getRoot());
+        // FIREBASE
+        comprovaUsuari();
 
-        setSupportActionBar(binding.appBarMain.toolbar);
-        DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
-        mAuth = FirebaseAuth.getInstance();
+        // NAV BAR
+        configuraBarraNavegacio();
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        // HAMBURGER MENU
+        configuraMenuDesplegable();
 
-        actionMenu=(FloatingActionMenu)findViewById(R.id.menuFlotant);
-        actionMenu.setClosedOnTouchOutside(true);
+        // FLOATING BUTTONS
+        configuraBotoFlotant();
+        
 
-        nouObjecte=(FloatingActionButton)findViewById(R.id.nouObjecte);
-        nouObjecte.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(getApplicationContext(),NouObjecteActivity.class);
-                startActivity(i);
-            }
-
-
+        // EVENTS
+        nouObjecte = findViewById(R.id.nouObjecte);
+        nouObjecte.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(), NouObjecteActivity.class);
+            startActivity(i);
         });
 
-      nouPrestec=(FloatingActionButton)findViewById(R.id.nouPrestec);
-        nouPrestec.setOnClickListener(new View.OnClickListener(){
+        nouPrestec = findViewById(R.id.nouPrestec);
+        nouPrestec.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(), SelectObjecteActivity.class);
+            startActivity(i);
+        });
+        
+        // TODO: LOG OUT USER
+        View header = navigationView.getHeaderView(0);
+        TextView usernameMenuField = header.findViewById(R.id.header_username);
+        usernameMenuField.setText(mAuth.getCurrentUser().getEmail());
+        header.findViewById(R.id.header_username).setOnClickListener(new View.OnClickListener() {
+           @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "ASD",
+                        Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(getApplicationContext(),NouPrestecActivity.class);
-                startActivity(i);
             }
         });
-
-        db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     *
+     */
+    private void comprovaUsuari() {
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        if (user == null) {
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+        }
+    }
+
+    /**
+     *
+     */
+    private void configuraBarraNavegacio() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout.addDrawerListener(this);
+        navigationView = findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    /**
+     *
+     */
+    private void configuraMenuDesplegable() {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        MenuItem menuItem = navigationView.getMenu().getItem(0);
+        onNavigationItemSelected(menuItem);
+        menuItem.setChecked(true);
+    }
+    
+    /**
+     *
+     */
+    private void configuraBotoFlotant() {
+        floatingActionMenu = findViewById(R.id.menuFlotant);
+        floatingActionMenu.setClosedOnTouchOutside(true);
+    }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+        Log.d("MAIN_ACTIVITY", "ITEM CLICKED: " + item.getItemId());
+
+        Fragment fragment;
+        String titol;
+        switch (item.getItemId()) {
+            case R.id.nav_objectes:
+                titol = getString(R.string.menu_objectes);
+                fragment = ObjectesContentFragment.newInstance();
+
+                break;
+            case R.id.nav_home:
+                titol = getString(R.string.menu_home);
+                fragment = HomeContentFragment.newInstance();
+
+                break;
+            case R.id.nav_settings:
+                titol = getString(R.string.menu_settings);
+                fragment = SettingsContentFragment.newInstance();
+
+                break;
+            default:
+                throw new IllegalArgumentException("not implement!");
+        }
+
+        setTitle(titol);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim)
+                .replace(R.id.home_content, fragment)
+                .commit();
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+    public void onDrawerSlide(@NonNull @NotNull View drawerView, float slideOffset) {
+
     }
 
+    @Override
+    public void onDrawerOpened(@NonNull @NotNull View drawerView) {
+
+    }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public void onDrawerClosed(@NonNull @NotNull View drawerView) {
 
-        FirebaseUser user = mAuth.getCurrentUser();
-        if(user == null){
-            Intent i = new Intent(getApplicationContext(),LoginActivity.class);
-            startActivity(i);
-        }
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
     }
 }

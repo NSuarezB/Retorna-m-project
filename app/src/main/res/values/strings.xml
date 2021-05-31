@@ -9,6 +9,8 @@
 
     <string name="menu_home">Retorna\'m</string>
     <string name="menu_gallery">Gallery</string>
+    <string name="menu_objectes">Llista d\'objectes</string>
+    <string name="menu_settings">Configuració</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="text_home">Esta es la pagina principal</string>
     <string name="esta_es_la_pagina_principal">Esta es la pagina principal</string>

@@ -19,8 +19,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -44,9 +46,9 @@ public class NouObjecteActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseStorage storage = FirebaseStorage.getInstance();
+        CollectionReference objectes = db.collection("objectes");
 
         valor = (RatingBar) findViewById(R.id.ratingBar);
-        valor.setRating(5);
 
 
         FirebaseUser user = mAuth.getCurrentUser();
@@ -84,13 +86,14 @@ public class NouObjecteActivity extends AppCompatActivity {
                 EditText nom = (EditText) findViewById(R.id.editTextTextPersonName3);
                 valor = (RatingBar) findViewById(R.id.ratingBar);
 
-
-
                 Map<String, Object> objecte = new HashMap<>();
                 objecte.put("descripcio", descripcio.getText().toString());
                 objecte.put("nom", nom.getText().toString());
                 objecte.put("valor", valor.getNumStars());
                 objecte.put("propietari", user.getUid());
+                objecte.put("dataCreacio", Timestamp.now());
+                objectes.document().set(objecte);
+
 
                 if (chosenImage != null) {
                     StorageReference storageImage = storage.getReference().child("images/" + chosenImage.getLastPathSegment());
@@ -113,8 +116,7 @@ public class NouObjecteActivity extends AppCompatActivity {
                     objecte.put("foto", "images/" + chosenImage.getLastPathSegment());
                 }
 
-                db.collection("objecte")
-                        .add(objecte)
+                objectes.add(objecte)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
@@ -130,10 +132,6 @@ public class NouObjecteActivity extends AppCompatActivity {
                         });
             }
         });
-
-    }
-
-    private void selectImage() {
 
     }
 
