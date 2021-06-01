@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.retornam20.adapter.DeixatsAdapter;
+import com.example.retornam20.adapter.RetornatsAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -66,14 +66,14 @@ public class RetornatsContentFragment extends Fragment {
 
                             Map<String, Object> data = document.getData();
                             data.put("id", document.getId());
-                         //   data.put("idusuari",document.get);
+                            //   data.put("idusuari",document.get);
 
-                            if (document.getData().get("retornat") == null) {
+                            if (document.getData().get("dataRetornat") == null) {
                                 listPrestecs.add(data);
                             }
                         }
 
-                        DeixatsAdapter mAdapter = new DeixatsAdapter(listPrestecs);
+                        RetornatsAdapter mAdapter = new RetornatsAdapter(listPrestecs);
                         mRecyclerView.setAdapter(mAdapter);
                     } else {
                         Log.d("SELECT_PRESTEC", "Error getting documents: ", task.getException());

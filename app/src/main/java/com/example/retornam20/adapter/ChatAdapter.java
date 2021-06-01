@@ -20,22 +20,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     private final List<Map<String, Object>> localDataSet;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
-        private final Context context;
-
-        public ViewHolder(View view) {
-            super(view);
-
-            context = view.getContext();
-            textView = view.findViewById(R.id.titolObjecte);
-        }
-
-        public TextView getTextView() {
-            return textView;
-        }
-    }
-
     /**
      * Initialize the dataset of the Adapter.
      *
@@ -64,11 +48,26 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         String id = (String) chat.get("id");
 
 
-
     }
 
     @Override
     public int getItemCount() {
         return localDataSet.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView textView;
+        private final Context context;
+
+        public ViewHolder(View view) {
+            super(view);
+
+            context = view.getContext();
+            textView = view.findViewById(R.id.titolObjecte);
+        }
+
+        public TextView getTextView() {
+            return textView;
+        }
     }
 }

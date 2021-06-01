@@ -40,6 +40,7 @@ public class NouPrestecActivity extends AppCompatActivity {
         String objecteId = extras.getString("objecte");
         String amicId = extras.getString("usuari");
         Log.d(LOG_TAG_PRESTEC, "Objecte seleccionat: " + objecteId);
+        Log.d(LOG_TAG_PRESTEC, "Usuari seleccionat: " + amicId);
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -77,7 +78,7 @@ public class NouPrestecActivity extends AppCompatActivity {
                 //    return;
                 //}
                 //DocumentSnapshot document = documents.get(0);
-                
+
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     Log.d(LOG_TAG_PRESTEC, "DocumentSnapshot data: " + document.getData());

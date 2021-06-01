@@ -44,7 +44,7 @@ public class SelectUsuariActivity extends AppCompatActivity {
         CollectionReference amics = db.collection("amics");
 
         FirebaseUser user = mAuth.getCurrentUser();
-        if(user == null){
+        if (user == null) {
             Log.e(TAG, "Sense sessio iniciada!!");
             finish();
             return;
@@ -57,46 +57,46 @@ public class SelectUsuariActivity extends AppCompatActivity {
         List<Map<String, Object>> listAmics = new ArrayList<>();
         UsuarisAdapter mAdapter = new UsuarisAdapter(listAmics, objecteId);
 
-        Log.d(TAG,"Llista amics buida?"+ listAmics );
+        Log.d(TAG, "Llista amics buida?" + listAmics);
         amics.whereEqualTo("usuari", user.getUid())
                 .get()
                 .addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.d(TAG, "successful amics 1" + user.getUid());
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Log.d(TAG, document.getId() + " => " + document.getData());
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "successful amics 1" + user.getUid());
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
 
-                    db.collection("usuaris")
-                            .whereEqualTo("id", document.getData().get("amic"))
-                            .limit(1)
-                            .get()
-                            .addOnCompleteListener(taskAmic -> {
-                                Log.d(TAG,"Estoy dentro y funciono he conseguido estar en el addOnCompleteListener");
-                                if (taskAmic.isSuccessful()) {
-                                    if (taskAmic.getResult() == null || taskAmic.getResult().isEmpty()) {
-                                        return;
-                                    }
+                            db.collection("usuaris")
+                                    .whereEqualTo("id", document.getData().get("amic"))
+                                    .limit(1)
+                                    .get()
+                                    .addOnCompleteListener(taskAmic -> {
+                                        Log.d(TAG, "Estoy dentro y funciono he conseguido estar en el addOnCompleteListener");
+                                        if (taskAmic.isSuccessful()) {
+                                            if (taskAmic.getResult() == null || taskAmic.getResult().isEmpty()) {
+                                                return;
+                                            }
 
-                                    DocumentSnapshot documentUsuariAmic = taskAmic.getResult().getDocuments().get(0);
-                                    Log.d(TAG,"Que contiene el DocumentSnapshot? :"+documentUsuariAmic);
-                                    Map<String, Object> data = documentUsuariAmic.getData();
-                                    Log.d(TAG,"Que contiene data para que no salga?"+data);
-                                   // data.put("id", documentUsuariAmic.getId());
-                                    Log.d(TAG,"Segunda vez que vemos el data data.put: "+data);
-                                    listAmics.add(data);
+                                            DocumentSnapshot documentUsuariAmic = taskAmic.getResult().getDocuments().get(0);
+                                            Log.d(TAG, "Que contiene el DocumentSnapshot? :" + documentUsuariAmic);
+                                            Map<String, Object> data = documentUsuariAmic.getData();
+                                            Log.d(TAG, "Que contiene data para que no salga?" + data);
+                                            // data.put("id", documentUsuariAmic.getId());
+                                            Log.d(TAG, "Segunda vez que vemos el data data.put: " + data);
+                                            listAmics.add(data);
 
-                                    mAdapter.notifyDataSetChanged();
-                                } else {
-                                    Log.d(TAG, "Error obtenint amic: ", task.getException());
-                                }
-                            });
-                }
+                                            mAdapter.notifyDataSetChanged();
+                                        } else {
+                                            Log.d(TAG, "Error obtenint amic: ", task.getException());
+                                        }
+                                    });
+                        }
 
-                mRecyclerView.setAdapter(mAdapter);
-            } else {
-                Log.d(TAG, "Error obtenint amics: ", task.getException());
-            }
-        });
+                        mRecyclerView.setAdapter(mAdapter);
+                    } else {
+                        Log.d(TAG, "Error obtenint amics: ", task.getException());
+                    }
+                });
 
         Button nouAmic = findViewById(R.id.addNouAmicBtn);
         nouAmic.setOnClickListener(v -> {
@@ -112,7 +112,7 @@ public class SelectUsuariActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 String amicId = data.getStringExtra("amic");
-                String proba= "Holiii";
+                String proba = "Holiii";
 
                 Intent i = new Intent(getApplicationContext(), NouPrestecActivity.class);
 

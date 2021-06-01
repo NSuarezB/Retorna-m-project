@@ -21,7 +21,6 @@ import com.example.retornam20.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -29,55 +28,16 @@ import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
-
 public class DeixatsAdapter extends RecyclerView.Adapter<DeixatsAdapter.ViewHolder> {
 
+    public static final String TAG_DEIXATS_OBJECTE = "DEIXATS_OBJECTE";
     private final List<Map<String, Object>> localDataSet;
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
-        private String currentId;
-        private final Context context;
-        private ImageView imageView;
-
-        public ViewHolder(View view) {
-            super(view);
-
-            context = view.getContext();
-            textView = view.findViewById(R.id.textView8);
-            imageView = view.findViewById(R.id.imageView5);
-
-            Button btn = view.findViewById(R.id.button6);
-            btn.setOnClickListener(t -> {
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("objectes").document(currentId)
-                        .update("retornat", Timestamp.now())
-                        .addOnSuccessListener(aVoid -> {
-                            Log.d("LLISTA_OBJECTES", "prestec successfully retornat!");
-
-                            Intent i = new Intent(context, MainActivity.class);
-                            context.startActivity(i);
-                        })
-                        .addOnFailureListener(e -> Log.w("LLISTA_OBJECTES", "Error retornant prestec", e));
-            });
-        }
-
-        public TextView getTextView() {
-            return textView;
-        }
-
-        public void setCurrentId(String id) {
-            currentId = id;
-        }
-
-        public ImageView getImageView() {
-            return imageView;
-        }
-    }
 
     /**
      * Initialize the dataset of the Adapter.
@@ -103,69 +63,98 @@ public class DeixatsAdapter extends RecyclerView.Adapter<DeixatsAdapter.ViewHold
     public void onBindViewHolder(DeixatsAdapter.ViewHolder viewHolder, final int position) {
         Map<String, Object> prestec = localDataSet.get(position);
 
-        String objecteId = (String) prestec.get("objectes");
+        String objecteId = (String) prestec.get("objecte");
+        String prestatId = (String) prestec.get("prestat");
         String id = (String) prestec.get("id");
-        String nomObject = (String) prestec.get("objecte");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         viewHolder.setCurrentId(id);
-
-        viewHolder.getTextView().setText(nomObject);
-        Log.d(TAG,"Esto es para saber donde me encuentro: "+ nomObject);
-        viewHolder.setCurrentId(id);
+        viewHolder.setDataPrestat((Timestamp) prestec.get("dataPrestec"));
+        viewHolder.setDataDevolucio((Timestamp) prestec.get("dataLimit"));
 
         if (objecteId != null) {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            CollectionReference objectes = db.collection("objectes");
-
-            objectes.document(objecteId).get().addOnCompleteListener(task -> {
+            db.collection("objectes")
+                    .document(objecteId)
+                    .get()
+                    .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d("DEIXATS_OBJECTE", "Dades obtingudes: " + document.getData());
+                                Log.d(TAG_DEIXATS_OBJECTE, "Dades obtingudes: " + document.getData());
 
                                 String imageRef = (String) document.get("foto");
                                 if (imageRef != null) {
-                                    //carregaFotoAlItem(viewHolder, imageRef);
+                                    carregaFotoAlItem(viewHolder, imageRef);
                                 }
+
+                                viewHolder.setNom((String) document.get("nom"));
                             } else {
-                                Log.d("DEIXATS_OBJECTE", "no s'ha trobat el objecte");
+                                Log.d(TAG_DEIXATS_OBJECTE, "no s'ha trobat el objecte: " + objecteId);
                             }
                         } else {
-                            Log.d("DEIXATS_OBJECTE", "obtenir el objecte, ha fallta ", task.getException());
+                            Log.d(TAG_DEIXATS_OBJECTE, "obtenir el objecte, ha fallta ", task.getException());
                         }
-
-
-
                     });
+        } else {
+            Log.d(TAG_DEIXATS_OBJECTE, "no hi ha objecte!!");
         }
 
+        if (prestatId != null) {
+            db.collection("usuaris")
+                    .document(prestatId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG_DEIXATS_OBJECTE, "Dades obtingudes: " + document.getData());
 
+                                String imageRef = (String) document.get("foto");
+                                if (imageRef != null) {
+                                    carregaFotoAlItem(viewHolder, imageRef);
+                                }
+
+                                viewHolder.setNomPersona((String) document.get("nom"));
+                            } else {
+                                Log.d(TAG_DEIXATS_OBJECTE, "no s'ha trobat el usuari: " + prestatId);
+                            }
+                        } else {
+                            Log.d(TAG_DEIXATS_OBJECTE, "obtenir el usuari, ha fallta ", task.getException());
+                        }
+                    });
+        } else {
+            Log.d(TAG_DEIXATS_OBJECTE, "no hi ha prestatari!!");
+        }
 
     }
 
     /**
-    * Carrega una referencia a una foto de la Firestore Storage a un ImageView
-    *
-    * @param viewHolder ObjectesAdapter.ViewHolder suport de la vista on esta el ImageView
-    * @param imageRef String referencia de la imatge a la Firestore (images/image:XXXX)
-    */
+     * Carrega una referencia a una foto de la Firestore Storage a un ImageView
+     *
+     * @param viewHolder ObjectesAdapter.ViewHolder suport de la vista on esta el ImageView
+     * @param imageRef   String referencia de la imatge a la Firestore (images/image:XXXX)
+     */
     private void carregaFotoAlItem(DeixatsAdapter.ViewHolder viewHolder, String imageRef) {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference photoReference= storageReference.child(imageRef);
+        StorageReference photoReference = storageReference.child(imageRef);
 
         final long ONE_MEGABYTE = 1024 * 1024;
-        photoReference.getBytes(10*ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        photoReference.getBytes(10 * ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                viewHolder.getImageView().setImageBitmap(bmp);
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
+                Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+
+                viewHolder.getImageView().setImageBitmap(decoded);
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Toast.makeText(viewHolder.context, "No s'ha trobat la imatge de la db: " + imageRef, Toast.LENGTH_LONG).show();
-Log.d("CARREGA_FOTO", exception.getMessage());
+                Log.d("CARREGA_FOTO", exception.getMessage());
             }
         });
     }
@@ -173,5 +162,76 @@ Log.d("CARREGA_FOTO", exception.getMessage());
     @Override
     public int getItemCount() {
         return localDataSet.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView nomObjecte;
+        private final TextView nomPersona;
+        private final TextView dataPrestec;
+        private final TextView dataDevolucio;
+        private final Context context;
+        private String currentId;
+        private final ImageView imageView;
+
+        public ViewHolder(View view) {
+            super(view);
+
+            context = view.getContext();
+            imageView = view.findViewById(R.id.imageView5);
+            nomObjecte = view.findViewById(R.id.textView8);
+            nomPersona = view.findViewById(R.id.textViewPersonaPRestada);
+            dataPrestec = view.findViewById(R.id.textViewDataPrestec);
+            dataDevolucio = view.findViewById(R.id.textViewDataDevolucio);
+
+            Button btn = view.findViewById(R.id.button6);
+            btn.setOnClickListener(t -> {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("prestecs").document(currentId)
+                        .update("dataRetornat", Timestamp.now())
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d("LLISTA_OBJECTES", "prestec successfully retornat!");
+
+                            Intent i = new Intent(context, MainActivity.class);
+                            context.startActivity(i);
+                        })
+                        .addOnFailureListener(e -> Log.w("LLISTA_OBJECTES", "Error retornant prestec", e));
+            });
+        }
+
+        public void setCurrentId(String id) {
+            currentId = id;
+        }
+
+        public ImageView getImageView() {
+            return imageView;
+        }
+
+        public void setNom(String nom) {
+            nomObjecte.setText(nom);
+        }
+
+        public void setNomPersona(String email) {
+            nomPersona.setText(email);
+        }
+
+        public void setDataPrestat(Timestamp data) {
+            if (data == null) {
+                dataPrestec.setText("--");
+                return;
+            }
+
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            dataPrestec.setText(format.format(data.toDate()));
+        }
+
+        public void setDataDevolucio(Timestamp data) {
+            if (data == null) {
+                dataDevolucio.setText("--");
+                return;
+            }
+
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            dataDevolucio.setText(format.format(data.toDate()));
+        }
     }
 }

@@ -24,44 +24,6 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
     private final List<Map<String, Object>> localDataSet;
 
     /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
-        private String currentId;
-        private final Context context;
-
-        public ViewHolder(View view) {
-            super(view);
-            // Define click listener for the ViewHolder's View
-
-            context = view.getContext();
-            textView = view.findViewById(R.id.titolObjecte);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("SELECT_CHAT", "TOUCH EVENT: " + getAdapterPosition() + " OBJECT: " + currentId);
-
-                    Context context = v.getContext();
-                    Intent i = new Intent(context, NouPrestecActivity.class);
-                    i.putExtra("receptor", currentId);
-                    context.startActivity(i);
-                }
-            });
-        }
-
-        public TextView getTextView() {
-            return textView;
-        }
-
-        public void setCurrentId(String id) {
-            currentId = id;
-        }
-    }
-
-    /**
      * Inicialitza la llista de converses al sistema de xat
      *
      * @param dataSet List<Map<String, Object>> conté les converses en format id => document
@@ -95,5 +57,43 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ViewHo
     @Override
     public int getItemCount() {
         return localDataSet.size();
+    }
+
+    /**
+     * Provide a reference to the type of views that you are using
+     * (custom ViewHolder).
+     */
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView textView;
+        private final Context context;
+        private String currentId;
+
+        public ViewHolder(View view) {
+            super(view);
+            // Define click listener for the ViewHolder's View
+
+            context = view.getContext();
+            textView = view.findViewById(R.id.titolObjecte);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("SELECT_CHAT", "TOUCH EVENT: " + getAdapterPosition() + " OBJECT: " + currentId);
+
+                    Context context = v.getContext();
+                    Intent i = new Intent(context, NouPrestecActivity.class);
+                    i.putExtra("receptor", currentId);
+                    context.startActivity(i);
+                }
+            });
+        }
+
+        public TextView getTextView() {
+            return textView;
+        }
+
+        public void setCurrentId(String id) {
+            currentId = id;
+        }
     }
 }

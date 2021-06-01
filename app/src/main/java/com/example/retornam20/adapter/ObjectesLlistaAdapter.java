@@ -22,11 +22,45 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
-
 public class ObjectesLlistaAdapter extends RecyclerView.Adapter<ObjectesLlistaAdapter.ViewHolder> {
 
     private final List<Map<String, Object>> localDataSet;
+
+    /**
+     * Initialize the dataset of the Adapter.
+     *
+     * @param dataSet String[] containing the data to populate views to be used
+     *                by RecyclerView.
+     */
+    public ObjectesLlistaAdapter(List<Map<String, Object>> dataSet) {
+        localDataSet = dataSet;
+    }
+
+    @NonNull
+    @NotNull
+    @Override
+    public ObjectesLlistaAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        // Create a new view, which defines the UI of the list item
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_select_objecte, parent, false);
+
+        return new ObjectesLlistaAdapter.ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(ObjectesLlistaAdapter.ViewHolder viewHolder, final int position) {
+        Map<String, Object> objecte = localDataSet.get(position);
+        String nom = (String) objecte.get("nom");
+        String id = (String) objecte.get("id");
+
+        viewHolder.getTextView().setText(nom);
+        viewHolder.setCurrentId(id);
+    }
+
+    @Override
+    public int getItemCount() {
+        return localDataSet.size();
+    }
 
     /**
      * Provide a reference to the type of views that you are using
@@ -34,20 +68,19 @@ public class ObjectesLlistaAdapter extends RecyclerView.Adapter<ObjectesLlistaAd
      */
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
-        private String currentId;
         private final Context context;
+        private String currentId;
 
         public ViewHolder(View view) {
             super(view);
-            // Define click listener for the ViewHolder's View
 
             context = view.getContext();
             textView = view.findViewById(R.id.titolObjecte);
 
-            Button btn = view.findViewById(R.id.button6);
             /**
              * Eliminem la dada de la base de dades
              */
+            Button btn = view.findViewById(R.id.button6);
             btn.setOnClickListener(t -> {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -61,23 +94,14 @@ public class ObjectesLlistaAdapter extends RecyclerView.Adapter<ObjectesLlistaAd
                         })
                         .addOnFailureListener(e -> Log.w("LLISTA_OBJECTES", "Error deleting document", e));
             });
+            /**
+             * Prestem el objecte
+             */
             Button btn2 = view.findViewById(R.id.button8);
             btn2.setOnClickListener(t -> {
                 Intent i = new Intent(context, SelectUsuariActivity.class);
                 i.putExtra("objecte", currentId);
                 context.startActivity(i);
-            });
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("SELECT_OBJECTE", "TOUCH EVENT: " + getAdapterPosition() + " OBJECT: " + currentId);
-
-                    /*Context context = v.getContext();
-                    Intent i = new Intent(context, NouPrestecActivity.class);
-                    i.putExtra("objecte", currentId);
-                    context.startActivity(i);*/
-                }
             });
         }
 
@@ -88,49 +112,5 @@ public class ObjectesLlistaAdapter extends RecyclerView.Adapter<ObjectesLlistaAd
         public void setCurrentId(String id) {
             currentId = id;
         }
-    }
-
-    /**
-     * Initialize the dataset of the Adapter.
-     *
-     * @param dataSet String[] containing the data to populate views to be used
-     *                by RecyclerView.
-     */
-    public ObjectesLlistaAdapter(List<Map<String, Object>> dataSet) {
-        localDataSet = dataSet;
-    }
-
-    // Create new views (invoked by the layout manager)
-
-    @NonNull
-    @NotNull
-    @Override
-    public ObjectesLlistaAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_select_objecte, parent, false);
-
-        return new ObjectesLlistaAdapter.ViewHolder(view);
-    }
-
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(ObjectesLlistaAdapter.ViewHolder viewHolder, final int position) {
-
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
-        Map<String, Object> objecte = localDataSet.get(position);
-        String nom = (String) objecte.get("nom");
-        String id = (String) objecte.get("id");
-
-        viewHolder.getTextView().setText(nom);
-        Log.d(TAG,"Esto es para saber donde me encuentro: "+ nom);
-        viewHolder.setCurrentId(id);
-    }
-
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-        return localDataSet.size();
     }
 }

@@ -29,8 +29,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     /**
-     *
-     *  Creació de comptes d'usuari,
+     * Creació de comptes d'usuari,
      *
      * @param savedInstanceState
      */
@@ -45,12 +44,12 @@ public class RegistrationActivity extends AppCompatActivity {
             finish();
         }
 
-        Button registration = (Button)findViewById(R.id.button2);
+        Button registration = findViewById(R.id.button2);
         registration.setOnClickListener(v -> {
 
-            EditText email = (EditText) findViewById(R.id.editTextTextEmailAddress3);
-            EditText pass = (EditText) findViewById(R.id.editTextTextPassword);
-            EditText nom = (EditText) findViewById(R.id.editTextTextPersonName4);
+            EditText email = findViewById(R.id.editTextTextEmailAddress3);
+            EditText pass = findViewById(R.id.editTextTextPassword);
+            EditText nom = findViewById(R.id.editTextTextPersonName4);
 
             if (TextUtils.isEmpty(nom.getText().toString())) {
                 nom.setError("Ha d'introduïr un nom");
@@ -62,7 +61,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 return;
             }
 
-            if (pass.getText().length()<8){
+            if (pass.getText().length() < 8) {
                 pass.setError("La contraseya a de ser de 8 caracters o més");
                 return;
             }
@@ -83,7 +82,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 usuari.put("nom", nom.getText().toString());
                                 usuari.put("data", Timestamp.now());
                                 usuari.put("email", email.getText().toString());
-                                usuaris.add(usuari);
+                                usuaris.document(user.getUid()).set(usuari);
 
                                 updateUI(user);
                             } else {
@@ -96,10 +95,10 @@ public class RegistrationActivity extends AppCompatActivity {
                         }
 
                         private void updateUI(FirebaseUser user) {
-                            if(user != null){
-                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                                intent .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                intent .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            if (user != null) {
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             }
                         }
@@ -108,8 +107,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     }
-
-
 
 
 }

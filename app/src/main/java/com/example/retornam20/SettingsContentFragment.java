@@ -18,7 +18,6 @@ public class SettingsContentFragment extends Fragment {
         SettingsContentFragment frag = new SettingsContentFragment();
 
 
-
         return frag;
     }
 

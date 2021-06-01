@@ -86,14 +86,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (user != null) {
             View header = navigationView.getHeaderView(0);
             TextView usernameMenuField = header.findViewById(R.id.header_username);
+            TextView emailMenuField = header.findViewById(R.id.header_email);
             usernameMenuField.setText(mAuth.getCurrentUser().getEmail());
+            emailMenuField.setText(mAuth.getCurrentUser().getDisplayName());
             logout = header.findViewById(R.id.button7);
             logout.setOnClickListener(view -> {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = getBaseContext().getPackageManager().getLaunchIntentForPackage(
-                        getBaseContext().getPackageName() );
-                intent .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        getBaseContext().getPackageName());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             });
         }
@@ -157,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     *
      * Té tota la logistica de selecció d'elements en el hamburger
      *
      * @param item

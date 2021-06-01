@@ -19,10 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-        private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
     /**
-     *
      * Iniciar sessió
      *
      * @param savedInstanceState
@@ -39,12 +38,12 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
 
-        Button loginButton = (Button) findViewById(R.id.button);
+        Button loginButton = findViewById(R.id.button);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText email = (EditText) findViewById(R.id.editTextTextEmailAddress);
-                EditText pass = (EditText) findViewById(R.id.editTextTextPassword2);
+                EditText email = findViewById(R.id.editTextTextEmailAddress);
+                EditText pass = findViewById(R.id.editTextTextPassword2);
 
                 mAuth.signInWithEmailAndPassword(email.getText().toString(), pass.getText().toString())
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -65,10 +64,10 @@ public class LoginActivity extends AppCompatActivity {
                             }
 
                             private void updateUI(FirebaseUser user) {
-                                if(user != null){
-                                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                                    intent .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    intent .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                if (user != null) {
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                 }
                             }
@@ -78,11 +77,11 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        Button registrationButton = (Button) findViewById(R.id.button3);
+        Button registrationButton = findViewById(R.id.button3);
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),RegistrationActivity.class);
+                Intent i = new Intent(getApplicationContext(), RegistrationActivity.class);
                 startActivity(i);
             }
         });

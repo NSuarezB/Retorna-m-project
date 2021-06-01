@@ -25,60 +25,14 @@ import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 
 public class ObjectesAdapter extends RecyclerView.Adapter<ObjectesAdapter.ViewHolder> {
 
     private final List<Map<String, Object>> localDataSet;
-
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
-        private final ImageView imageView;
-        private String currentId;
-        private final Context context;
-
-        public ViewHolder(View view) {
-            super(view);
-            // Define click listener for the ViewHolder's View
-
-            context = view.getContext();
-            textView = view.findViewById(R.id.titolObjecte);
-            imageView = view.findViewById(R.id.imageView5);
-            Button btn = view.findViewById(R.id.button6);
-            btn.setVisibility(View.GONE);
-            Button btn2 = view.findViewById(R.id.button8);
-            btn2.setVisibility(View.GONE);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("SELECT_OBJECTE", "TOUCH EVENT: " + getAdapterPosition() + " OBJECT: " + currentId);
-
-                    Context context = v.getContext();
-                    Intent i = new Intent(context, SelectUsuariActivity.class);
-                    i.putExtra("objecte", currentId);
-                    context.startActivity(i);
-                }
-            });
-        }
-
-        public TextView getTextView() {
-            return textView;
-        }
-
-        public ImageView getImageView() {
-            return imageView;
-        }
-
-        public void setCurrentId(String id) {
-            currentId = id;
-        }
-    }
 
     /**
      * Inicialitza la llista d'objectes interna de l'adapter
@@ -117,34 +71,87 @@ public class ObjectesAdapter extends RecyclerView.Adapter<ObjectesAdapter.ViewHo
     }
 
     /**
-    * Carrega una referencia a una foto de la Firestore Storage a un ImageView
-    *
-    * @param viewHolder ObjectesAdapter.ViewHolder suport de la vista on esta el ImageView
-    * @param imageRef String referencia de la imatge a la Firestore (images/image:XXXX)
-    */
+     * Carrega una referencia a una foto de la Firestore Storage a un ImageView
+     *
+     * @param viewHolder ObjectesAdapter.ViewHolder suport de la vista on esta el ImageView
+     * @param imageRef   String referencia de la imatge a la Firestore (images/image:XXXX)
+     */
     private void carregaFotoAlItem(ObjectesAdapter.ViewHolder viewHolder, String imageRef) {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference photoReference= storageReference.child(imageRef);
+        StorageReference photoReference = storageReference.child(imageRef);
 
         final long ONE_MEGABYTE = 1024 * 1024;
-        photoReference.getBytes(10*ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        photoReference.getBytes(10 * ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
-                public void onSuccess(byte[] bytes) {
-                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    viewHolder.getImageView().setImageBitmap(bmp);
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
+                Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
 
-                }
+                viewHolder.getImageView().setImageBitmap(decoded);
+
+            }
         }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(viewHolder.context, "No Such file or Path found: " + imageRef, Toast.LENGTH_LONG).show();
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(viewHolder.context, "No Such file or Path found: " + imageRef, Toast.LENGTH_LONG).show();
 
-    Log.d("CARREGA_FOTO", exception.getMessage());            }
+                Log.d("CARREGA_FOTO", exception.getMessage());
+            }
         });
     }
 
     @Override
     public int getItemCount() {
         return localDataSet.size();
+    }
+
+    /**
+     * Provide a reference to the type of views that you are using
+     * (custom ViewHolder).
+     */
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView textView;
+        private final ImageView imageView;
+        private final Context context;
+        private String currentId;
+
+        public ViewHolder(View view) {
+            super(view);
+            // Define click listener for the ViewHolder's View
+
+            context = view.getContext();
+            textView = view.findViewById(R.id.titolObjecte);
+            imageView = view.findViewById(R.id.imageView5);
+            Button btn = view.findViewById(R.id.button6);
+            btn.setVisibility(View.GONE);
+            Button btn2 = view.findViewById(R.id.button8);
+            btn2.setVisibility(View.GONE);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("SELECT_OBJECTE", "TOUCH EVENT: " + getAdapterPosition() + " OBJECT: " + currentId);
+
+                    Context context = v.getContext();
+                    Intent i = new Intent(context, SelectUsuariActivity.class);
+                    i.putExtra("objecte", currentId);
+                    context.startActivity(i);
+                }
+            });
+        }
+
+        public TextView getTextView() {
+            return textView;
+        }
+
+        public ImageView getImageView() {
+            return imageView;
+        }
+
+        public void setCurrentId(String id) {
+            currentId = id;
+        }
     }
 }

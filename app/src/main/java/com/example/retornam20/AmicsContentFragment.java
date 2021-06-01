@@ -21,7 +21,6 @@ public class AmicsContentFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_settings, container, false);
 
 
-
         return layout;
     }
 }

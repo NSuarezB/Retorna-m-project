@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 
 public class DeixatsContentFragment extends Fragment {
 
-    private static final String TAG ="TAG" ;
+    private static final String TAG = "TAG";
 
     public static DeixatsContentFragment newInstance() {
         return new DeixatsContentFragment();
@@ -61,13 +61,9 @@ public class DeixatsContentFragment extends Fragment {
                             Map<String, Object> data = document.getData();
                             data.put("id", document.getId());
 
-                            if (document.getData().get("retornat") == null) {
+                            if (document.getData().get("dataRetornat") == null) {
                                 listPrestecs.add(data);
-
-
-
                             }
-
 
                             Log.d(TAG, "AQUI ES DONDE TENEMOS QUE AÑADIR LOS DATOS???");
                         }

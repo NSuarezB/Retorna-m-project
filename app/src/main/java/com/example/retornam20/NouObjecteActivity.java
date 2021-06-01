@@ -38,6 +38,7 @@ import static android.content.ContentValues.TAG;
 public class NouObjecteActivity extends AppCompatActivity {
     Uri chosenImage;
     RatingBar valor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,16 +49,16 @@ public class NouObjecteActivity extends AppCompatActivity {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         CollectionReference objectes = db.collection("objectes");
 
-        valor = (RatingBar) findViewById(R.id.ratingBar);
+        valor = findViewById(R.id.ratingBar);
 
 
         FirebaseUser user = mAuth.getCurrentUser();
-        if(user == null){
+        if (user == null) {
             finish();
             return;
         }
 
-        ImageView ivImage = (ImageView) findViewById(R.id.imageView4);
+        ImageView ivImage = findViewById(R.id.imageView4);
         ActivityResultLauncher<String> pickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 new ActivityResultCallback<Uri>() {
@@ -84,14 +85,14 @@ public class NouObjecteActivity extends AppCompatActivity {
          *
          */
 
-        Button crearObjecteButton = (Button)findViewById(R.id.button4);
+        Button crearObjecteButton = findViewById(R.id.button4);
         crearObjecteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG,"BOTO TOCAT!!!!!!!!!!!");
-                EditText descripcio = (EditText) findViewById(R.id.editTextTextPersonName5);
-                EditText nom = (EditText) findViewById(R.id.editTextTextPersonName3);
-                valor = (RatingBar) findViewById(R.id.ratingBar);
+                Log.d(TAG, "BOTO TOCAT!!!!!!!!!!!");
+                EditText descripcio = findViewById(R.id.editTextTextPersonName5);
+                EditText nom = findViewById(R.id.editTextTextPersonName3);
+                valor = findViewById(R.id.ratingBar);
 
                 Map<String, Object> objecte = new HashMap<>();
                 objecte.put("descripcio", descripcio.getText().toString());
@@ -107,7 +108,7 @@ public class NouObjecteActivity extends AppCompatActivity {
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull @NotNull Exception e) {
-                            Log.d(TAG,"HA FALLADO TTTTTTTTTTTTTTTT");
+                            Log.d(TAG, "HA FALLADO TTTTTTTTTTTTTTTT");
 
                         }
                     });
@@ -115,7 +116,7 @@ public class NouObjecteActivity extends AppCompatActivity {
                     uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<UploadTask.TaskSnapshot> task) {
-                            Log.d(TAG,"CONSEGUIDO xxxxxxxxxxxdddddddddddddd");
+                            Log.d(TAG, "CONSEGUIDO xxxxxxxxxxxdddddddddddddd");
 
                         }
                     });

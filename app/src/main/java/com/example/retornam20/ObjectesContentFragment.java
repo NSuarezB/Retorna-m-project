@@ -38,7 +38,6 @@ public class ObjectesContentFragment extends Fragment {
 
 
     /**
-     *
      * @param inflater
      * @param container
      * @param savedInstanceState
@@ -73,7 +72,7 @@ public class ObjectesContentFragment extends Fragment {
                             Map<String, Object> data = document.getData();
                             data.put("id", document.getId());
                             listObjects.add(data);
-                            Log.d(TAG,"Esto es el objetesFragment despues de añadir data a la listObject AAAAAIIIXX");
+                            Log.d(TAG, "Esto es el objetesFragment despues de añadir data a la listObject AAAAAIIIXX");
                         }
 
                         ObjectesLlistaAdapter mAdapter = new ObjectesLlistaAdapter(listObjects);

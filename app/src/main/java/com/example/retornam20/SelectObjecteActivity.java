@@ -33,7 +33,7 @@ public class SelectObjecteActivity extends AppCompatActivity {
         CollectionReference objectes = db.collection("objectes");
 
         FirebaseUser user = mAuth.getCurrentUser();
-        if(user == null){
+        if (user == null) {
             finish();
             return;
         }
@@ -46,21 +46,21 @@ public class SelectObjecteActivity extends AppCompatActivity {
         objectes.whereEqualTo("propietari", user.getUid())
                 .get()
                 .addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Log.d("SELECT_OBJECTE", document.getId() + " => " + document.getData());
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("SELECT_OBJECTE", document.getId() + " => " + document.getData());
 
-                    Map<String, Object> data = document.getData();
-                    data.put("id", document.getId());
-                    listObjects.add(data);
-                }
+                            Map<String, Object> data = document.getData();
+                            data.put("id", document.getId());
+                            listObjects.add(data);
+                        }
 
-                ObjectesAdapter mAdapter = new ObjectesAdapter(listObjects);
-                mRecyclerView.setAdapter(mAdapter);
-            } else {
-                Log.d("SELECT_OBJECTE", "Error getting documents: ", task.getException());
-            }
-        });
+                        ObjectesAdapter mAdapter = new ObjectesAdapter(listObjects);
+                        mRecyclerView.setAdapter(mAdapter);
+                    } else {
+                        Log.d("SELECT_OBJECTE", "Error getting documents: ", task.getException());
+                    }
+                });
 
         Button nouObjecte = findViewById(R.id.button5);
         nouObjecte.setOnClickListener(new View.OnClickListener() {
