@@ -55,10 +55,14 @@ public class SelectUsuariActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
 
         List<Map<String, Object>> listAmics = new ArrayList<>();
+        UsuarisAdapter mAdapter = new UsuarisAdapter(listAmics, objecteId);
+
+        Log.d(TAG,"Llista amics buida?"+ listAmics );
         amics.whereEqualTo("usuari", user.getUid())
                 .get()
                 .addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                Log.d(TAG, "successful amics 1" + user.getUid());
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Log.d(TAG, document.getId() + " => " + document.getData());
 
@@ -67,24 +71,27 @@ public class SelectUsuariActivity extends AppCompatActivity {
                             .limit(1)
                             .get()
                             .addOnCompleteListener(taskAmic -> {
+                                Log.d(TAG,"Estoy dentro y funciono he conseguido estar en el addOnCompleteListener");
                                 if (taskAmic.isSuccessful()) {
                                     if (taskAmic.getResult() == null || taskAmic.getResult().isEmpty()) {
                                         return;
                                     }
 
-                                    DocumentSnapshot documentUsuariAmic = task.getResult().getDocuments().get(0);
-
+                                    DocumentSnapshot documentUsuariAmic = taskAmic.getResult().getDocuments().get(0);
+                                    Log.d(TAG,"Que contiene el DocumentSnapshot? :"+documentUsuariAmic);
                                     Map<String, Object> data = documentUsuariAmic.getData();
-                                    data.put("id", documentUsuariAmic.getId());
+                                    Log.d(TAG,"Que contiene data para que no salga?"+data);
+                                   // data.put("id", documentUsuariAmic.getId());
+                                    Log.d(TAG,"Segunda vez que vemos el data data.put: "+data);
                                     listAmics.add(data);
 
+                                    mAdapter.notifyDataSetChanged();
                                 } else {
                                     Log.d(TAG, "Error obtenint amic: ", task.getException());
                                 }
                             });
                 }
 
-                UsuarisAdapter mAdapter = new UsuarisAdapter(listAmics, objecteId);
                 mRecyclerView.setAdapter(mAdapter);
             } else {
                 Log.d(TAG, "Error obtenint amics: ", task.getException());
@@ -105,6 +112,7 @@ public class SelectUsuariActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 String amicId = data.getStringExtra("amic");
+                String proba= "Holiii";
 
                 Intent i = new Intent(getApplicationContext(), NouPrestecActivity.class);
 
@@ -114,6 +122,7 @@ public class SelectUsuariActivity extends AppCompatActivity {
                 }
 
                 i.putExtra("amic", amicId);
+
 
                 startActivity(i);
             }

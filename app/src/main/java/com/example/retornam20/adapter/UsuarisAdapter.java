@@ -29,7 +29,8 @@ public class UsuarisAdapter extends RecyclerView.Adapter<UsuarisAdapter.ViewHold
      * (custom ViewHolder).
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+        private TextView textView;
+        private TextView textView2;
         private String currentId;
         private String objecteId;
         private final Context context;
@@ -40,24 +41,26 @@ public class UsuarisAdapter extends RecyclerView.Adapter<UsuarisAdapter.ViewHold
 
             context = view.getContext();
             objecteId = objecte;
-            textView = view.findViewById(R.id.titolObjecte);
+            textView = view.findViewById(R.id.textViewNom);
+            textView2 = view.findViewById(R.id.textViewTelefon);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("SELECT_USUARI", "TOUCH EVENT: " + getAdapterPosition() + " USUARI: " + currentId + " OBJECT: " + objecteId);
+            itemView.setOnClickListener(v -> {
+                Log.d("SELECT_USUARI", "TOUCH EVENT: " + getAdapterPosition() + " USUARI: " + currentId + " OBJECT: " + objecteId);
 
-                    Context context = v.getContext();
-                    Intent i = new Intent(context, NouPrestecActivity.class);
-                    i.putExtra("usuari", currentId);
-                    i.putExtra("objecte", objecteId);
-                    context.startActivity(i);
-                }
+                Context context = v.getContext();
+                Intent i = new Intent(context, NouPrestecActivity.class);
+                i.putExtra("usuari", currentId);
+                i.putExtra("objecte", objecteId);
+                context.startActivity(i);
             });
         }
 
         public TextView getTextView() {
             return textView;
+        }
+
+        public TextView getTextView2() {
+            return textView2;
         }
 
         public void setCurrentId(String id) {
@@ -80,7 +83,7 @@ public class UsuarisAdapter extends RecyclerView.Adapter<UsuarisAdapter.ViewHold
     @Override
     public UsuarisAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_select_objecte, parent, false);
+                .inflate(R.layout.fragment_select_amic, parent, false);
 
         return new UsuarisAdapter.ViewHolder(view, objecteId);
     }
@@ -90,10 +93,12 @@ public class UsuarisAdapter extends RecyclerView.Adapter<UsuarisAdapter.ViewHold
 
         Map<String, Object> objecte = localDataSet.get(position);
         String nom = (String) objecte.get("nom");
+        String email = (String) objecte.get("email");
         String id = (String) objecte.get("id");
 
 
         viewHolder.getTextView().setText(nom);
+        viewHolder.getTextView2().setText(email);
         viewHolder.setCurrentId(id);
     }
 

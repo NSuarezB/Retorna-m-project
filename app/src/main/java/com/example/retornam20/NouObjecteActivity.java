@@ -1,5 +1,6 @@
 package com.example.retornam20;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,13 +18,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -33,6 +32,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 public class NouObjecteActivity extends AppCompatActivity {
     Uri chosenImage;
@@ -87,6 +88,7 @@ public class NouObjecteActivity extends AppCompatActivity {
         crearObjecteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG,"BOTO TOCAT!!!!!!!!!!!");
                 EditText descripcio = (EditText) findViewById(R.id.editTextTextPersonName5);
                 EditText nom = (EditText) findViewById(R.id.editTextTextPersonName3);
                 valor = (RatingBar) findViewById(R.id.ratingBar);
@@ -105,6 +107,7 @@ public class NouObjecteActivity extends AppCompatActivity {
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull @NotNull Exception e) {
+                            Log.d(TAG,"HA FALLADO TTTTTTTTTTTTTTTT");
 
                         }
                     });
@@ -112,6 +115,7 @@ public class NouObjecteActivity extends AppCompatActivity {
                     uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<UploadTask.TaskSnapshot> task) {
+                            Log.d(TAG,"CONSEGUIDO xxxxxxxxxxxdddddddddddddd");
 
                         }
                     });
@@ -120,19 +124,13 @@ public class NouObjecteActivity extends AppCompatActivity {
                 }
 
                 objectes.add(objecte)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d("CREAR_OBJECTE", "DocumentSnapshot added with ID: " + documentReference.getId());
-                                finish();
-                            }
+                        .addOnSuccessListener(documentReference -> {
+                            Log.d("CREAR_OBJECTE", "DocumentSnapshot added with ID: " + documentReference.getId());
+                            Intent data = new Intent();
+                            data.putExtra("objecte", documentReference.getId());
+                            setResult(RESULT_OK, data);
                         })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("CREAR_OBJECTE", "Error adding document", e);
-                            }
-                        });
+                        .addOnFailureListener(e -> Log.w("CREAR_OBJECTE", "Error adding document", e));
             }
         });
 

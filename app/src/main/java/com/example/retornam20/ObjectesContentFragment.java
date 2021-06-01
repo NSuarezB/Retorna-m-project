@@ -24,6 +24,8 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import static android.content.ContentValues.TAG;
+
 public class ObjectesContentFragment extends Fragment {
 
     private static final String TEXT = "text";
@@ -71,6 +73,7 @@ public class ObjectesContentFragment extends Fragment {
                             Map<String, Object> data = document.getData();
                             data.put("id", document.getId());
                             listObjects.add(data);
+                            Log.d(TAG,"Esto es el objetesFragment despues de añadir data a la listObject AAAAAIIIXX");
                         }
 
                         ObjectesLlistaAdapter mAdapter = new ObjectesLlistaAdapter(listObjects);

@@ -23,7 +23,9 @@
             android:layout_margin="5dp"
             android:layout_weight="0"
             android:text="Seleciona un objecte!"
-            android:textSize="16sp" />
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/llistaObjectes"

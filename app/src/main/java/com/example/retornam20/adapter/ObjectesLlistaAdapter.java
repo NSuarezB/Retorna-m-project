@@ -22,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.ContentValues.TAG;
+
 public class ObjectesLlistaAdapter extends RecyclerView.Adapter<ObjectesLlistaAdapter.ViewHolder> {
 
     private final List<Map<String, Object>> localDataSet;
@@ -30,7 +32,7 @@ public class ObjectesLlistaAdapter extends RecyclerView.Adapter<ObjectesLlistaAd
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private String currentId;
         private final Context context;
@@ -43,8 +45,12 @@ public class ObjectesLlistaAdapter extends RecyclerView.Adapter<ObjectesLlistaAd
             textView = view.findViewById(R.id.titolObjecte);
 
             Button btn = view.findViewById(R.id.button6);
+            /**
+             * Eliminem la dada de la base de dades
+             */
             btn.setOnClickListener(t -> {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
+
                 db.collection("objectes").document(currentId)
                         .delete()
                         .addOnSuccessListener(aVoid -> {
@@ -118,6 +124,7 @@ public class ObjectesLlistaAdapter extends RecyclerView.Adapter<ObjectesLlistaAd
         String id = (String) objecte.get("id");
 
         viewHolder.getTextView().setText(nom);
+        Log.d(TAG,"Esto es para saber donde me encuentro: "+ nom);
         viewHolder.setCurrentId(id);
     }
 

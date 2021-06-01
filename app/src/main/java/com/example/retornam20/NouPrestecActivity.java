@@ -38,12 +38,14 @@ public class NouPrestecActivity extends AppCompatActivity {
         }
 
         String objecteId = extras.getString("objecte");
+        String amicId = extras.getString("usuari");
         Log.d(LOG_TAG_PRESTEC, "Objecte seleccionat: " + objecteId);
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference objectes = db.collection("objectes");
         CollectionReference prestecs = db.collection("prestecs");
+        CollectionReference usuaris = db.collection("usuaris");
 
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
@@ -67,14 +69,40 @@ public class NouPrestecActivity extends AppCompatActivity {
             }
         });
 
+        usuaris.document(amicId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                //List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                //if (documents.isEmpty()) {
+                //    Log.e(LOG_TAG_PRESTEC, "No s'ha trobat l'usuari: " + amicId);
+                //    return;
+                //}
+                //DocumentSnapshot document = documents.get(0);
+                
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Log.d(LOG_TAG_PRESTEC, "DocumentSnapshot data: " + document.getData());
+
+                    TextView nomAmic = findViewById(R.id.nomPersonaTextView);
+                    nomAmic.setText(document.get("nom").toString());
+
+                    TextView emailAmic = findViewById(R.id.emailPersonaTextView);
+                    emailAmic.setText(document.get("email").toString());
+                } else {
+                    Log.d(LOG_TAG_PRESTEC, "No such document");
+                }
+            } else {
+                Log.d(LOG_TAG_PRESTEC, "get failed with ", task.getException());
+            }
+        });
+
         /////////
         // EVENTS
         /////////
 
         /**
-         * 
+         *
          * Guardar els nous prestecs creats a la base de dades:Firebase
-         * 
+         *
          */
         EditText devolucioPicker = findViewById(R.id.editTextDate);
         devolucioPicker.setOnClickListener(v -> {
@@ -92,15 +120,13 @@ public class NouPrestecActivity extends AppCompatActivity {
 
         Button crearPrestecView = findViewById(R.id.button4);
         crearPrestecView.setOnClickListener(v -> {
-            EditText prestat = findViewById(R.id.editTextTextPersonName5);
-
             Map<String, Object> prestec = new HashMap<>();
             prestec.put("objecte", objecteId);
             prestec.put("usuari", user.getUid());
-            prestec.put("usuariPrestat", prestat.getText().toString());
+            prestec.put("prestat", amicId);
             prestec.put("dataLimit", devolucioTimestamp);
             prestec.put("dataPrestec", Timestamp.now());
-            
+
             prestecs.add(prestec)
                     .addOnSuccessListener(documentReference -> {
                         Log.d(LOG_TAG_PRESTEC, "DocumentSnapshot added with ID: " + documentReference.getId());

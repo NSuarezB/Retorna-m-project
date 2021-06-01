@@ -22,7 +22,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Adreça de correu del teu amic" />
+            android:text="Possa el correu del teu amic"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/amicMailTextView"
@@ -35,6 +37,7 @@
             android:id="@+id/button4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:text="Afegir amic"
             app:icon="@android:drawable/ic_menu_save"
             app:iconGravity="textEnd" />
