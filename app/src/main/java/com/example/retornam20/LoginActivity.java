@@ -21,7 +21,12 @@ public class LoginActivity extends AppCompatActivity {
 
         private FirebaseAuth mAuth;
 
-
+    /**
+     *
+     * Iniciar sessió
+     *
+     * @param savedInstanceState
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +66,10 @@ public class LoginActivity extends AppCompatActivity {
 
                             private void updateUI(FirebaseUser user) {
                                 if(user != null){
-                                    finish();
+                                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                    intent .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
                                 }
                             }
                         });

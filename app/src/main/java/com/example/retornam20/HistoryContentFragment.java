@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.retornam20.adapter.DeixatsAdapter;
+import com.example.retornam20.adapter.HistoricAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -23,27 +23,24 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-public class DeixatsContentFragment extends Fragment {
+public class HistoryContentFragment extends Fragment {
 
-    public static DeixatsContentFragment newInstance() {
-        return new DeixatsContentFragment();
+    public static HistoryContentFragment newInstance() {
+        return new HistoryContentFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
             Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_deixats, container, false);
+        View layout = inflater.inflate(R.layout.fragment_history, container, false);
+
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference objectes = db.collection("prestecs");
 
-        if (user == null) {
-            return layout;
-        }
-
-        RecyclerView mRecyclerView = layout.findViewById(R.id.llistaDeixats);
+        RecyclerView mRecyclerView = layout.findViewById(R.id.llistaHistorica);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity().getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
@@ -60,12 +57,13 @@ public class DeixatsContentFragment extends Fragment {
                             listPrestecs.add(data);
                         }
 
-                        DeixatsAdapter mAdapter = new DeixatsAdapter(listPrestecs);
+                        HistoricAdapter mAdapter = new HistoricAdapter(listPrestecs);
                         mRecyclerView.setAdapter(mAdapter);
                     } else {
                         Log.d("SELECT_PRESTEC", "Error getting documents: ", task.getException());
                     }
                 });
+
 
         return layout;
     }

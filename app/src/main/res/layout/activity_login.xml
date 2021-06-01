@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/background_basic"
     tools:context=".LoginActivity">
 
     <LinearLayout
@@ -15,6 +16,31 @@
         tools:layout_editor_absoluteX="10dp"
         tools:layout_editor_absoluteY="10dp">
 
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Retorna'm"
+            android:textColor="#BE6C1EE9"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@mipmap/objecte_cub" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Correu electronic"
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/editTextTextEmailAddress"
             android:layout_width="match_parent"
@@ -23,6 +49,13 @@
             android:layout_marginBottom="20dp"
             android:ems="10"
             android:inputType="textEmailAddress" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contrasenya"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/editTextTextPassword2"
@@ -44,7 +77,14 @@
             android:id="@+id/button3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registrar-se" />
+            android:gravity="center|start"
+            android:hapticFeedbackEnabled="false"
+            android:text="Encara no tens cap compte? Registra't!"
+            android:textColor="#673AB7"
+            android:textColorHighlight="#E91E63"
+            android:textColorHint="#CDDC39"
+            android:textSize="8sp"
+            app:backgroundTint="@android:color/transparent" />
 
     </LinearLayout>
 

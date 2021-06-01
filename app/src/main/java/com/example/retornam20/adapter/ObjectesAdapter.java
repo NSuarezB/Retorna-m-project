@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,8 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.retornam20.NouPrestecActivity;
 import com.example.retornam20.R;
+import com.example.retornam20.SelectUsuariActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -48,6 +49,10 @@ public class ObjectesAdapter extends RecyclerView.Adapter<ObjectesAdapter.ViewHo
             context = view.getContext();
             textView = view.findViewById(R.id.titolObjecte);
             imageView = view.findViewById(R.id.imageView5);
+            Button btn = view.findViewById(R.id.button6);
+            btn.setVisibility(View.GONE);
+            Button btn2 = view.findViewById(R.id.button8);
+            btn2.setVisibility(View.GONE);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -55,7 +60,7 @@ public class ObjectesAdapter extends RecyclerView.Adapter<ObjectesAdapter.ViewHo
                     Log.d("SELECT_OBJECTE", "TOUCH EVENT: " + getAdapterPosition() + " OBJECT: " + currentId);
 
                     Context context = v.getContext();
-                    Intent i = new Intent(context, NouPrestecActivity.class);
+                    Intent i = new Intent(context, SelectUsuariActivity.class);
                     i.putExtra("objecte", currentId);
                     context.startActivity(i);
                 }
@@ -110,10 +115,10 @@ public class ObjectesAdapter extends RecyclerView.Adapter<ObjectesAdapter.ViewHo
         viewHolder.getTextView().setText(nom);
         viewHolder.setCurrentId(id);
     }
-    
+
     /**
     * Carrega una referencia a una foto de la Firestore Storage a un ImageView
-    * 
+    *
     * @param viewHolder ObjectesAdapter.ViewHolder suport de la vista on esta el ImageView
     * @param imageRef String referencia de la imatge a la Firestore (images/image:XXXX)
     */

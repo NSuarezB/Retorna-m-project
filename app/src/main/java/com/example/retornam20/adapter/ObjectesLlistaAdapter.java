@@ -1,16 +1,21 @@
 package com.example.retornam20.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.retornam20.MainActivity;
 import com.example.retornam20.R;
+import com.example.retornam20.SelectUsuariActivity;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,6 +41,26 @@ public class ObjectesLlistaAdapter extends RecyclerView.Adapter<ObjectesLlistaAd
 
             context = view.getContext();
             textView = view.findViewById(R.id.titolObjecte);
+
+            Button btn = view.findViewById(R.id.button6);
+            btn.setOnClickListener(t -> {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("objectes").document(currentId)
+                        .delete()
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d("LLISTA_OBJECTES", "DocumentSnapshot successfully deleted!");
+
+                            Intent i = new Intent(context, MainActivity.class);
+                            context.startActivity(i);
+                        })
+                        .addOnFailureListener(e -> Log.w("LLISTA_OBJECTES", "Error deleting document", e));
+            });
+            Button btn2 = view.findViewById(R.id.button8);
+            btn2.setOnClickListener(t -> {
+                Intent i = new Intent(context, SelectUsuariActivity.class);
+                i.putExtra("objecte", currentId);
+                context.startActivity(i);
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

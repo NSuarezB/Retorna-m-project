@@ -5,12 +5,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -41,10 +42,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FloatingActionButton nouObjecte;
     FloatingActionButton nouPrestec;
 
+    Button logout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
 
         // FIREBASE
         comprovaUsuari();
@@ -57,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // FLOATING BUTTONS
         configuraBotoFlotant();
-        
+
 
         // EVENTS
         nouObjecte = findViewById(R.id.nouObjecte);
@@ -71,23 +77,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent i = new Intent(getApplicationContext(), SelectObjecteActivity.class);
             startActivity(i);
         });
-        
-        // TODO: LOG OUT USER
-        View header = navigationView.getHeaderView(0);
-        TextView usernameMenuField = header.findViewById(R.id.header_username);
-        usernameMenuField.setText(mAuth.getCurrentUser().getEmail());
-        header.findViewById(R.id.header_username).setOnClickListener(new View.OnClickListener() {
-           @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "ASD",
-                        Toast.LENGTH_SHORT).show();
 
-            }
-        });
+        /**
+         *
+         * Tancar la sessió
+         *
+         */
+        if (user != null) {
+            View header = navigationView.getHeaderView(0);
+            TextView usernameMenuField = header.findViewById(R.id.header_username);
+            usernameMenuField.setText(mAuth.getCurrentUser().getEmail());
+            logout = header.findViewById(R.id.button7);
+            logout.setOnClickListener(view -> {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = getBaseContext().getPackageManager().getLaunchIntentForPackage(
+                        getBaseContext().getPackageName() );
+                intent .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            });
+        }
     }
 
     /**
-     *
+     * Comprova que l'usuari estigui iniciat, si no ho esta , l'envia al Login
      */
     private void comprovaUsuari() {
         mAuth = FirebaseAuth.getInstance();
@@ -99,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     *
+     * Configura la barra de navegació i lliga els events a la activity
      */
     private void configuraBarraNavegacio() {
         toolbar = findViewById(R.id.toolbar);
@@ -112,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     *
+     * Configura el hamburger menu, els items estan a activity_main_drawer.xml
      */
     private void configuraMenuDesplegable() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -124,14 +137,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         onNavigationItemSelected(menuItem);
         menuItem.setChecked(true);
     }
-    
+
     /**
-     *
+     * Configura els botons flotants (nou prestec i nou objecte)
      */
     private void configuraBotoFlotant() {
         floatingActionMenu = findViewById(R.id.menuFlotant);
         floatingActionMenu.setClosedOnTouchOutside(true);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -142,6 +156,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     *
+     * Té tota la logistica de selecció d'elements en el hamburger
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         Log.d("MAIN_ACTIVITY", "ITEM CLICKED: " + item.getItemId());
@@ -162,6 +183,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_settings:
                 titol = getString(R.string.menu_settings);
                 fragment = SettingsContentFragment.newInstance();
+
+                break;
+            case R.id.nav_history:
+                titol = getString(R.string.menu_history);
+                fragment = HistoryContentFragment.newInstance();
 
                 break;
             default:

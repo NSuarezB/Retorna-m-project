@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
-public class DeixatsAdapter extends RecyclerView.Adapter<DeixatsAdapter.ViewHolder> {
+public class HistoricAdapter extends RecyclerView.Adapter<HistoricAdapter.ViewHolder> {
 
     private final List<Map<String, Object>> localDataSet;
 
@@ -65,22 +65,22 @@ public class DeixatsAdapter extends RecyclerView.Adapter<DeixatsAdapter.ViewHold
      * @param dataSet String[] containing the data to populate views to be used
      *                by RecyclerView.
      */
-    public DeixatsAdapter(List<Map<String, Object>> dataSet) {
+    public HistoricAdapter(List<Map<String, Object>> dataSet) {
         localDataSet = dataSet;
     }
 
     @NonNull
     @NotNull
     @Override
-    public DeixatsAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public HistoricAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_select_prestec, parent, false);
 
-        return new DeixatsAdapter.ViewHolder(view);
+        return new HistoricAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(DeixatsAdapter.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(HistoricAdapter.ViewHolder viewHolder, final int position) {
         Map<String, Object> prestec = localDataSet.get(position);
         String objecteId = (String) prestec.get("objecte");
         String id = (String) prestec.get("id");
@@ -96,17 +96,17 @@ public class DeixatsAdapter extends RecyclerView.Adapter<DeixatsAdapter.ViewHold
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d("DEIXATS_OBJECTE", "Dades obtingudes: " + document.getData());
+                                Log.d("HISTORIC_PRESTECS", "Dades obtingudes: " + document.getData());
 
                                 String imageRef = (String) document.get("foto");
                                 if (imageRef != null) {
-                                    //carregaFotoAlItem(viewHolder, imageRef);
+                                    carregaFotoAlItem(viewHolder, imageRef);
                                 }
                             } else {
-                                Log.d("DEIXATS_OBJECTE", "no s'ha trobat el objecte");
+                                Log.d("HISTORIC_PRESTECS", "no s'ha trobat el objecte");
                             }
                         } else {
-                            Log.d("DEIXATS_OBJECTE", "obtenir el objecte, ha fallta ", task.getException());
+                            Log.d("HISTORIC_PRESTECS", "obtenir el objecte, ha fallta ", task.getException());
                         }
                     });
         }
@@ -118,7 +118,7 @@ public class DeixatsAdapter extends RecyclerView.Adapter<DeixatsAdapter.ViewHold
     * @param viewHolder ObjectesAdapter.ViewHolder suport de la vista on esta el ImageView
     * @param imageRef String referencia de la imatge a la Firestore (images/image:XXXX)
     */
-    private void carregaFotoAlItem(DeixatsAdapter.ViewHolder viewHolder, String imageRef) {
+    private void carregaFotoAlItem(HistoricAdapter.ViewHolder viewHolder, String imageRef) {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         StorageReference photoReference= storageReference.child(imageRef);
 

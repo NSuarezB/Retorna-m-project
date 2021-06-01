@@ -37,7 +37,6 @@ import java.util.Map;
 public class NouObjecteActivity extends AppCompatActivity {
     Uri chosenImage;
     RatingBar valor;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +77,12 @@ public class NouObjecteActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         *
+         *  Guarda els objectes creats a la base de dades:Firebase
+         *
+         */
+
         Button crearObjecteButton = (Button)findViewById(R.id.button4);
         crearObjecteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,8 +97,6 @@ public class NouObjecteActivity extends AppCompatActivity {
                 objecte.put("valor", valor.getNumStars());
                 objecte.put("propietari", user.getUid());
                 objecte.put("dataCreacio", Timestamp.now());
-                objectes.document().set(objecte);
-
 
                 if (chosenImage != null) {
                     StorageReference storageImage = storage.getReference().child("images/" + chosenImage.getLastPathSegment());

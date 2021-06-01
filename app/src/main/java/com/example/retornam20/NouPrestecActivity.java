@@ -70,6 +70,12 @@ public class NouPrestecActivity extends AppCompatActivity {
         /////////
         // EVENTS
         /////////
+
+        /**
+         * 
+         * Guardar els nous prestecs creats a la base de dades:Firebase
+         * 
+         */
         EditText devolucioPicker = findViewById(R.id.editTextDate);
         devolucioPicker.setOnClickListener(v -> {
             DatePickerFragment newFragment = DatePickerFragment.newInstance((datePicker, year, month, day) -> {
@@ -94,8 +100,7 @@ public class NouPrestecActivity extends AppCompatActivity {
             prestec.put("usuariPrestat", prestat.getText().toString());
             prestec.put("dataLimit", devolucioTimestamp);
             prestec.put("dataPrestec", Timestamp.now());
-            prestecs.document().set(prestec);
-
+            
             prestecs.add(prestec)
                     .addOnSuccessListener(documentReference -> {
                         Log.d(LOG_TAG_PRESTEC, "DocumentSnapshot added with ID: " + documentReference.getId());

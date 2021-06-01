@@ -12,6 +12,8 @@
         <activity android:name=".LlistatObjectesActivity" android:screenOrientation="portrait" />
         <activity android:name=".SelectObjecteActivity" android:screenOrientation="portrait" />
         <activity android:name=".NouPrestecActivity" android:screenOrientation="portrait" />
+        <activity android:name=".NouAmicActivity" android:screenOrientation="portrait" />
+        <activity android:name=".SelectUsuariActivity" android:screenOrientation="portrait" />
         <activity android:name=".NouObjecteActivity" android:screenOrientation="portrait" />
         <activity android:name=".RegistrationActivity" android:screenOrientation="portrait" />
         <activity android:name=".LoginActivity" android:screenOrientation="portrait" />
