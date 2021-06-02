@@ -52,10 +52,11 @@ public class NouAmicActivity extends AppCompatActivity {
 
                             DocumentSnapshot document = task.getResult().getDocuments().get(0);
                             Log.d(CREAR_AMIC, document.getId() + " => " + document.getData());
+                            String amicId = document.getId();
 
                             Map<String, Object> amic = new HashMap<>();
                             amic.put("usuari", user.getUid());
-                            amic.put("amic", document.getData().get("id"));
+                            amic.put("amic", amicId);
 
                             amics.add(amic)
                                     .addOnSuccessListener(documentReference -> {
@@ -63,7 +64,7 @@ public class NouAmicActivity extends AppCompatActivity {
 
                                         // Retornar a seleccionar amic
                                         Intent data = new Intent();
-                                        data.putExtra("amic", (String) document.getData().get("id"));
+                                        data.putExtra("amic", amicId);
 
                                         setResult(RESULT_OK, data);
 

@@ -15,17 +15,6 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@mipmap/background_basic">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="0"
-            android:text="Objectes actuals:"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"/>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/llistaObjectes"
             android:layout_width="match_parent"

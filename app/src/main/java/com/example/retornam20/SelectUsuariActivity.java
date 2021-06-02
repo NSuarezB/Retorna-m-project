@@ -112,7 +112,6 @@ public class SelectUsuariActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 String amicId = data.getStringExtra("amic");
-                String proba = "Holiii";
 
                 Intent i = new Intent(getApplicationContext(), NouPrestecActivity.class);
 
@@ -121,8 +120,7 @@ public class SelectUsuariActivity extends AppCompatActivity {
                     i.putExtra("objecte", extras.getString("objecte"));
                 }
 
-                i.putExtra("amic", amicId);
-
+                i.putExtra("usuari", amicId);
 
                 startActivity(i);
             }

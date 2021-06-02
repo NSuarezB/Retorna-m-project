@@ -130,6 +130,7 @@ public class NouObjecteActivity extends AppCompatActivity {
                             Intent data = new Intent();
                             data.putExtra("objecte", documentReference.getId());
                             setResult(RESULT_OK, data);
+                            finish();
                         })
                         .addOnFailureListener(e -> Log.w("CREAR_OBJECTE", "Error adding document", e));
             }
